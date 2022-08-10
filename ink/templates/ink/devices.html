@@ -1,0 +1,64 @@
+{% extends 'ink/main.html' %}
+
+{% block content %}
+
+    <br>
+
+    <div class="row">
+        <div class="col-md-12">
+            
+            <div class="card card-body">
+                <h5>УСТРОЙСТВА</h5>
+            <hr>
+                <table class="table table-sm">
+                    <tr>
+                        <th>Код УЕ</th>
+                        <th>Тип</th>
+                        <th>Модель</th>
+                        <th>Расположение</th>
+                        <th></th>
+                    </tr>
+                    {% for device in page_obj %}
+                        <tr>
+                            <td>{{ device.unit_id }}</td>
+                            <td>{{ device.type }}</td>
+                            <td>{{ device.model }}</td>
+                            <td>{{ device.location }}</td>
+                            <td><a class="btn btn-sm btn-info" href="{% url 'device' device.unit_id %}">Подробнее</a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                <hr>
+                <div class="new-add">
+                    <a class="btn btn-primary btn-sm btn-block" href="{% url 'device_create' %}">Новое устройство</a>
+                    </div>
+            </div>
+        </div>
+    </div>
+<br>
+<nav aria-label="Page navigation devices">
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+        {% if page_obj.has_previous %}
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+        </a>
+        {% endif %}
+        </li>
+        <li class="page-item active">
+        <span class="current">
+            <li class="page-item"><a class="page-link" href="#">{{ page_obj.number }}</a></li>
+        </span>
+        </li>
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endblock %}

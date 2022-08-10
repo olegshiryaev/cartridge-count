@@ -1,0 +1,86 @@
+{%  extends 'ink/main.html' %}
+
+{% block content %}
+
+	<br>
+
+<div class="row">
+	<div class="col-md">
+		<div class="card card-body">
+			<h5>Устройство:</h5>
+            <p>Код УЕ: {{device.unit_id}}</p>
+			<hr>
+            <a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'device_update' device.unit_id %}?next={{ request.path }}">Изменить устройство</a>
+			<a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'create_mount' device.unit_id %}?next={{ request.path }}">Установить картридж</a>
+
+		</div>
+	</div>
+
+	<div class="col-md">
+		<div class="card card-body">
+			<h5>Информация об устройстве</h5>
+			<hr>
+			<p>Тип: {{device.type}}</p>
+            <p>Модель: {{device.model}}</p>
+			<p>Расположение: {{device.location}}</p>
+		</div>
+	</div>
+
+	<div class="col-md">
+		<div class="card card-body">
+			<h5>Количество установок</h5>
+			<hr>
+			<h1 style="text-align: center;padding: 10px">{{mounts_count}}</h1>
+		</div>
+	</div>
+</div>
+
+
+<br>
+<div class="row">
+	<div class="col">
+		<div class="card card-body">
+
+			<form method="get">
+				{{myFilter.form}}
+
+		    <button class="btn btn-secondary" type="submit">Поиск</button>
+		  </form>
+
+		</div>
+	</div>
+	
+</div>
+<br>
+
+<div class="row">
+	<div class="col-md">
+		<div class="card card-body">
+			<table class="table table-sm">
+				<tr>
+					<th>Дата</th>
+					<th>Наименование</th>
+					<th>Кол-во</th>
+					<th>Заявка</th>
+                    <th>Изменить</th>
+                    <th>Удалить</th>
+				</tr>
+
+				{% for mount in mounts %}
+
+				<tr>
+					<td>{{mount.date}}</td>
+					<td>{{mount.cartridge}}</td>
+					<td>{{mount.quantity}}</td>
+					<td>{{mount.query}}</td>
+                    <td><a class="btn btn-sm btn-info" href="{% url 'update_mount' mount.id %}?next={{ request.path }}">Изменить</a></td>
+					<td><a class="btn btn-sm btn-danger" href="{% url 'delete_mount' mount.id %}?next={{ request.path }}">Удалить</a></td>
+				</tr>
+				{% endfor %}
+
+			</table>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

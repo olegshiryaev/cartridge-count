@@ -1,0 +1,21 @@
+{% extends 'ink/main.html' %}
+
+{% block content %}
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <form method="post">
+            <div class="card">
+                <div class="card-header">
+            <h4>Добавить новое устройство</h4>
+        </div>
+            <div class="card-body">
+                <form action="{% url 'device_create' %}" method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button class="btn btn-primary btn-sm btn-block" type="submit">Добавить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

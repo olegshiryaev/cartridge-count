@@ -1,0 +1,51 @@
+body{
+    margin: 0;
+    min-height: 100vh;
+    background-color: #ebeff5;
+}
+
+
+#total-orders{
+    background-color: #4cb4c7;
+}
+
+
+#orders-delivered{
+    background-color: #7abecc;
+}
+
+#orders-pending{
+    background-color: #7CD1C0;
+}
+
+.login { 
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -150px 0 0 -150px;
+	width:300px;
+	height:300px;
+}
+.login h1 {
+    letter-spacing:1px;
+    text-align:center;
+}
+.login .btn {
+    display: inline-block;
+    margin-top: 16px;
+    margin-bottom: 0;
+    font-size: 13px;
+    line-height: 18px;
+}
+.form-lbl {
+text-align: center;
+font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 1.25rem;
+font-weight: 500;
+line-height: 1.2;
+padding-top: 36px;
+}
+
+.new-add {
+    margin-bottom: 20px;
+}
