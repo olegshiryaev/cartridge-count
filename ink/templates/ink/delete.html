@@ -1,24 +1,21 @@
-{%  extends 'ink/main.html' %}
-{% load static %}
-{% block content %}
+{% extends 'ink/main.html' %} {% load static %} {% block content %}
 
-<br>
+<br />
 <div class="row">
-	<div class="col-md-6">
-		<div class="card card-body">
+    <div class="col-md-6">
+        <div class="card card-body">
+            <p>
+                Вы действительно хотите удалить установку картриджа
+                "{{item.cartridge}}" от {{item.date}}?
+            </p>
+            <form action="{% url 'delete_mount' item.id  %}" method="POST">
+                {% csrf_token %}
+                <a class="btn btn-warning" href="{% url 'home' %}">Отменить</a>
 
-
-			<p>Вы действительно хотите удалить установку картриджа "{{item.cartridge}}" от {{item.date}}?</p>
-
-			<form action="{% url 'delete_mount' item.id  %}?next={{ request.path}}" method="POST">
-				
-				{% csrf_token %}
-				<a class="btn btn-warning" href="{% url 'home' %}">Отменить</a>
-
-				<input class="btn btn-danger" type="submit" name="Confirm">
-			</form>
-		</div>
-	</div>
+                <input class="btn btn-danger" type="submit" name="Confirm" />
+            </form>
+        </div>
+    </div>
 </div>
 
 {% endblock %}

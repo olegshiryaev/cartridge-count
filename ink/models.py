@@ -19,14 +19,11 @@ class Device(models.Model):  # Модель "Устройство"
         max_length=50, choices=TYPE_CHOICES, verbose_name="Тип устройства")
     model = models.CharField(max_length=100, verbose_name="Модель")
     location = models.CharField(max_length=200, verbose_name="Расположение")
-    slug = models.SlugField(default='', null=True)
 
     class Meta:
         verbose_name = 'устройство'
         verbose_name_plural = 'Устройства'
 
-    def get_url(self):
-        return reverse('device-detail', args=[self.unit_id])
 
     def __str__(self):
         return f'{self.unit_id} - {self.model}'
