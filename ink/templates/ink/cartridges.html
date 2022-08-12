@@ -2,49 +2,53 @@
 {% block content %}
 
 <br>
-	<div class="row">
-		<div class="col-md">
-			<div class="card card-body">
-				<h5>ОСТАТКИ</h5>
-			</div>
-        <br>
-            <div class="row">
-	<div class="col">
-        <div class="card card-body">
-            <form method="get">
-                {{myFilter.form}}
-                <button class="btn btn-secondary" type="submit">Поиск</button>
-            </form>
+    <div class="container-fluid">
+        <div class="row">
+		    <div class="col-md-12">
+			    <div class="card card-body">
+				    <h5>КАРТРИДЖИ</h5>
+			    </div>
+            <br>
+        <div class="row">
+	        <div class="col">
+                <div class="card card-body">
+                    <form method="GET" class="form-inline">
+                        <div class=form-group>
+                            <label style="margin-right: 20px">Наименование: </label>
+				                    {{cartridgeFilter.form.model}}
+                            <button style="margin-left: 10px" class="btn btn-secondary btn-sm">Поиск</button>
+                        </div>
+		            </form>
+                </div>
+	        </div>	
         </div>
-	</div>	
-</div>
-<br>
-	<div class="card card-body">
-		<table class="table">
-			<tr>
-                <th>Наименование</th>
-                <th>Остаток</th>
-                <th>Склад</th>
-            </tr>
-                {% for cartridge in page_obj %}
-                    {% for storage in cartridge.storage.all %}
+        <br>
+            <div class="card card-body">
+                <table class="table">
+                    <tr>
+                        <th>Наименование</th>
+                        <th>Остаток</th>
+                        <th>Склад</th>
+                    </tr>
+                        {% for cartridge in cartridge_page_obj %}
+                        {% for storage in cartridge.storage.all %}
                     <tr>
                         <td>{{cartridge.model}}</td>
                         <td>{{cartridge.amount}}</td>
                         <td>{{storage}}</td>
                     </tr>
-                {% endfor %}
-                {% endfor %}
-        </table>
+                        {% endfor %}
+                        {% endfor %}
+                </table>
+            </div>
+        </div>
     </div>
-</div>
-</div>
-    <br>
+<br>
     <nav aria-label="Page navigation devices">
         <ul class="pagination justify-content-center">
             <li class="page-item">
-            {% if page_obj.has_previous %}
-            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+            {% if cartridge_page_obj.has_previous %}
+            <a class="page-link" href="?page={{ cartridge_page_obj.previous_page_number }}" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
                 <span class="sr-only">Previous</span>
             </a>
@@ -52,12 +56,12 @@
             </li>
             <li class="page-item active">
             <span class="current">
-                <li class="page-item"><a class="page-link" href="#">{{ page_obj.number }}</a></li>
+                <li class="page-item"><a class="page-link" href="#">{{ cartridge_page_obj.number }}</a></li>
             </span>
             </li>
-            {% if page_obj.has_next %}
+            {% if cartridge_page_obj.has_next %}
             <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                <a class="page-link" href="?page={{ cartridge_page_obj.next_page_number }}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                     <span class="sr-only">Next</span>
                 </a>
@@ -65,4 +69,5 @@
             {% endif %}
         </ul>
     </nav>
+</div>
 {% endblock content %}

@@ -1,3 +1,4 @@
+from typing import Text
 from django import forms
 from django.forms import ModelForm, TextInput, Select
 from .models import Device, Mount
@@ -28,11 +29,13 @@ class DeviceUpdateForm(forms.ModelForm):  # Форма для редактиро
         }
 
 
-class MountForm(ModelForm):  # Форма установки картриджа на устройство
+class MountForm(forms.ModelForm):  # Форма установки картриджа на устройство
     class Meta:
         model = Mount
         fields = '__all__'
+        exclude = ['device', 'date']
         widgets = {
+            'date': TextInput(attrs={'type': 'date'}),
             'cartridge': Select(attrs={'class': 'col-md-12 form-control'}),
             'device': Select(attrs={'class': 'col-md-12 form-control'}),
             'quantity': TextInput(attrs={'class': 'col-md-12 form-control'}),

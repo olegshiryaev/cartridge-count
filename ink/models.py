@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.core.validators import MinLengthValidator, MaxLengthValidator, MinValueValidator
+from datetime import date
 from django.utils.text import slugify
 
 
@@ -23,6 +24,7 @@ class Device(models.Model):  # Модель "Устройство"
     class Meta:
         verbose_name = 'устройство'
         verbose_name_plural = 'Устройства'
+        ordering = ('unit_id',)
 
 
     def __str__(self):
@@ -42,26 +44,30 @@ class Storage(models.Model):  # Модель "Склад"
 
 class Cartridge(models.Model):  # Модель "Картридж"
     model = models.CharField(max_length=100, verbose_name="Наименование")
-    amount = models.IntegerField(
-        validators=[MinValueValidator(0)], verbose_name="Остаток")
+    amount = models.PositiveIntegerField(
+        validators=[MinValueValidator(0)], default=0, verbose_name="Остаток")
     storage = models.ManyToManyField(Storage)
 
     class Meta:
         verbose_name = 'картридж'
         verbose_name_plural = 'Картриджи'
+        ordering = ('model',)
 
     def __str__(self):
         return f'{self.model}'
 
+    def has_amount(self):
+        return self.amount > 0
+
 
 class Mount(models.Model):  # Модель "Установки картриджа на устройство"
-    date = models.DateTimeField(
-        auto_now_add=True, null=True, verbose_name="Дата")
+    date = models.DateField(
+        default=date.today, verbose_name="Дата установки")
     cartridge = models.ForeignKey(
         Cartridge, null=True, on_delete=models.SET_NULL, verbose_name="Картридж")
     device = models.ForeignKey(
         Device, null=True, on_delete=models.SET_NULL, verbose_name="Устройство")
-    quantity = models.IntegerField(verbose_name="Кол-во")
+    quantity = models.PositiveIntegerField(default=1, verbose_name="Кол-во")
     query = models.CharField(max_length=50, verbose_name="Заявка")
 
     class Meta:
@@ -70,3 +76,6 @@ class Mount(models.Model):  # Модель "Установки картридж�
 
     def __str__(self):
         return f'{self.date} | {self.cartridge} | {self.device} | {self.quantity} | {self.query}'
+
+    def remaining_stocky(self):
+        return self.cartridge.amount - self.quantity

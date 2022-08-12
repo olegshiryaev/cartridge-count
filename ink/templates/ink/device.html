@@ -6,10 +6,10 @@
 
 <div class="row">
 	<div class="col-md">
-		<div class="card card-body">
-			<h5>Устройство:</h5>
+		<div class="dev-card card card-body">
+			<h5>Устройство</h5>
+            <hr>
             <p>Код УЕ: {{device.unit_id}}</p>
-			<hr>
             <a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'device_update' device.unit_id %}?next={{ request.path }}">Изменить устройство</a>
 			<a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'create_mount' device.unit_id %}?next={{ request.path }}">Установить картридж</a>
 
@@ -17,7 +17,7 @@
 	</div>
 
 	<div class="col-md">
-		<div class="card card-body">
+		<div class="dev-card card card-body">
 			<h5>Информация об устройстве</h5>
 			<hr>
 			<p>Тип: {{device.type}}</p>
@@ -27,8 +27,8 @@
 	</div>
 
 	<div class="col-md">
-		<div class="card card-body">
-			<h5>Количество установок</h5>
+		<div class="dev-card card card-body">
+			<h5>Количество установок картриджей</h5>
 			<hr>
 			<h1 style="text-align: center;padding: 10px">{{mounts_count}}</h1>
 		</div>
@@ -41,10 +41,16 @@
 	<div class="col">
 		<div class="card card-body">
 
-			<form method="get">
-				{{myFilter.form}}
-
-		    <button class="btn btn-secondary" type="submit">Поиск</button>
+			<form method="GET" class="form-inline">
+                <div class=form-group>
+                    <label style="margin-right: 20px">Заявка: </label>
+				{{myFilter.form.query}}
+                <label style="margin-left: 20px; margin-right: 10px;">Дата: </label>
+                {{myFilter.form.date}}
+                <button style="margin-left: 10px" class="btn btn-secondary btn-sm">
+                    Поиск
+                   </button>
+                </div>
 		  </form>
 
 		</div>

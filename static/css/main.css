@@ -49,3 +49,7 @@ padding-top: 36px;
 .new-add {
     margin-bottom: 20px;
 }
+
+.dev-card {
+    min-height: 230px;
+}

@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.forms import inlineformset_factory
 from django.shortcuts import render
 from .models import Device, Cartridge, Mount
-from .filters import MountFilter, CartridgeFilter
+from .filters import MountFilter, CartridgeFilter, DeviceFilter
 from .forms import MountForm, DeviceForm, DeviceUpdateForm
 from django.shortcuts import redirect
 from django.core.paginator import Paginator
@@ -11,13 +11,17 @@ from django.core.paginator import Paginator
 @login_required()
 def show_all_device(request):  # Список всех устройств
     devices = Device.objects.all()
-    paginator = Paginator(devices, 10)
+    
+    deviceFilter = DeviceFilter(request.GET, queryset=devices)
+    devices = deviceFilter.qs
 
+    paginated_filtered_devices = Paginator(deviceFilter.qs, 10)
     page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+    device_page_obj = paginated_filtered_devices.get_page(page_number)
 
-    context = {'page_obj': page_obj,
-               'devices': devices}
+    context = {'device_page_obj': device_page_obj,
+                'devices': devices,
+               'deviceFilter': deviceFilter}
 
     return render(request, 'ink/devices.html', context)
 
@@ -72,17 +76,18 @@ def device_update(request, pk):  # Форма редактирования ус�
 @login_required()
 def cartridgeList(request):  # Список остатков картриджей
     cartridges = Cartridge.objects.all()
-    paginator = Paginator(cartridges, 10)
 
-    myFilter = CartridgeFilter(request.GET, queryset=cartridges)
-    cartridges = myFilter.qs
+    cartridgeFilter = CartridgeFilter(request.GET, queryset=cartridges)
+    cartridges = cartridgeFilter.qs
 
+    paginated_filtered_cartridges = Paginator(cartridgeFilter.qs, 10)
     page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+    cartridge_page_obj = paginated_filtered_cartridges.get_page(page_number)
 
-    context = {'page_obj': page_obj,
+
+    context = {'cartridge_page_obj': cartridge_page_obj,
                'cartridges': cartridges,
-               'myFilter': myFilter}
+               'cartridgeFilter': cartridgeFilter}
 
     return render(request, 'ink/cartridges.html', context)
 

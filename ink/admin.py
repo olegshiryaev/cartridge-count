@@ -28,9 +28,9 @@ class CartridgeAdmin(admin.ModelAdmin):
 
 @admin.register(Mount)
 class MountAdmin(admin.ModelAdmin):
-    list_display = ['date', 'cartridge', 'device', 'quantity', 'query']
+    list_display = ['cartridge', 'device', 'quantity', 'query']
     list_per_page = 20
-    search_fields = ['date', 'cartridge', 'device', 'query']
+    search_fields = ['cartridge', 'device', 'query']
 
 
 @admin.register(Storage)
