@@ -1,21 +1,30 @@
-{% extends 'ink/main.html' %} {% load static %} {% block content %}
+{% extends 'ink/main.html' %}
+{% load static %}
+{% block title %} Удалить установку картриджа {% endblock %}
+{% block content %}
 
-<br />
-<div class="row">
-    <div class="col-md-6">
-        <div class="card card-body">
-            <p>
-                Вы действительно хотите удалить установку картриджа
-                "{{item.cartridge}}" от {{item.date}}?
-            </p>
-            <form action="{% url 'delete_mount' item.id  %}" method="POST">
+
+<section id="devices_page">
+    <div class="container">
+        <div class="col-md-6" style="margin: auto;">
+        <div class="card">
+            <div class="card-header">
+                <h3>Вы действительно хотите удалить установку картриджа?</h3>
+            </div>
+            <div class="card-body">
+                <p>{{mount.cartridge}}, {{mount.quantity}} шт.<br>от {{mount.created_at}}?</p>
+            <form action="{% url 'delete_mount' mount.id  %}" method="POST">
                 {% csrf_token %}
-                <a class="btn btn-warning" href="{% url 'home' %}">Отменить</a>
+                <div class="gap-2 d-xs-flex justify-content-xs-center">
+                <a class="btn btn-warning " href="{% url 'device' mount.device.unit_id %}">Нет</a>
 
-                <input class="btn btn-danger" type="submit" name="Confirm" />
+                <input class="btn btn-danger" type="submit" name="Confirm" value="Да">
+            </div>
             </form>
         </div>
+            </div>
+        </div>
     </div>
-</div>
+</section>
 
 {% endblock %}

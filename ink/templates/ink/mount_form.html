@@ -1,29 +1,210 @@
 {%  extends 'ink/main.html' %}
 {% load static %}
+{% block title %} Установка картриджа {% endblock %}
 {% block content %}
 
-<br>
-    <div class="row">
-        <div class="col-md-12">
-            <form method="post">
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Установить картридж</h4>
-                    </div>
-                    <div class="card-body">
-                        {% csrf_token %}
-                        {{ formset.management_form }}
-                        {% for form in formset %}
-                        {{ form }}
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="mt-3 mb-5">
-                    <button type="submit" class="px-5 btn btn-info">Отправить</button>
-                </div>
-            </form>
+<link rel="stylesheet" href="{% static 'css/devdetail.css' %}">
+<section class="home-section">
+    <nav>
+        <div class="sidebar-button">
+            <i class='bx bx-menu sidebarBtn'></i>
+            <div>
+                <label style="padding-top: 10px;"><h2>Установить картридж</h2></label>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container home-content">
+        <div class="kahon">
+        <div class="col-md-12" style="margin: auto;">
+                        <form method="POST" autocomplete="off">    
+                        {% csrf_token %}                       
+                        {{ mount_formset.management_form }}
+                        {% for form in mount_formset %}
+                        <!-- ======== Block Id (Root) ======== -->
+                        {% block Value-id %}{% endblock Value-id %}
+                        <div class="row g-3">
+                            <div class="col-3">
+                                <label for="id_mount_set-0-cartridge">Склад</label>
+                                <select select class="form-select" name="mount_set-0-storage" id="id_mount_set-0-storage" required>
+                                    {% block storage %}
+                                <option value="" selected="">Выберите склад из списка</option>
+                                {% endblock storage %}
+                                <option value="4">Архангельск</option>
+                                <option value="5">Нарьян-Мар</option>
+                                </select>
+                            </div>
+                                <div class="col-9">
+                                <label for="id_mount_set-0-cartridge">Картридж</label>
+                                <select class="form-select" name="mount_set-0-cartridge" id="id_mount_set-0-cartridge" required>
+                                    {% block option %}
+                                <option value selected>Выберите картридж из списка</option>
+                                {% endblock option %}
+                                <option value="1">023.3200.1078 - Картридж Canon 712 1870B002 черный</option>
+                                <option value="2">023.3200.3558 - Картридж Canon CLI-426BK 4556B001 черный</option>
+                                <option value="3">023.3200.2901 - Картридж Canon CLI-426M 4558B001 пурпурный</option>
+                                <option value="4">023.3200.4499 - Картридж Canon CLI-451 желтый</option>
+                                <option value="5">023.3200.4500 - Картридж Canon CLI-451 пурпурный</option>
+                                <option value="6">023.3200.4501 - Картридж Canon CLI-451 черный</option>
+                                <option value="7">023.3200.5203 - Картридж Canon CLI-451C 6524B001 голубой</option>
+                                <option value="8">023.3200.5767 - Картридж Canon CLI-451C XL 6473B001 голубой</option>
+                                <option value="9">023.3200.5201 - Картридж Canon CLI-451M 6525B001 пурпурный</option>
+                                <option value="10">023.3200.5768 - Картридж Canon CLI-451M XL 6474B001 пурпурный</option>
+                                <option value="11">023.3200.5202 - Картридж Canon CLI-451Y 6526B001 желтый</option>
+                                <option value="12">023.3200.5769 - Картридж Canon CLI-451Y XL 6475B001 желтый</option>
+                                <option value="13">023.3200.4498 - Картридж Canon CLI-451С голубой</option>
+                                <option value="14">023.3200.5927 - Картридж Canon CLI-521M 2935B004 пурпурный</option>
+                                <option value="15">023.3200.5284 - Картридж Canon EP-22 1550A003 черный</option>
+                                <option value="16">023.3200.6516 - Картридж Canon PGI-2400XL BK 9257B001 черный</option>
+                                <option value="17">023.3200.6513 - Картридж Canon PGI-2400XL C 9274B001 голубой</option>
+                                <option value="18">023.3200.6514 - Картридж Canon PGI-2400XL M 9275B001 пурпурный</option>
+                                <option value="19">023.3200.6515 - Картридж Canon PGI-2400XL Y 9276B001 желтый</option>
+                                <option value="20">023.3200.5517 - Картридж Colortek 15A C7115A черный</option>
+                                <option value="21">023.3200.5520 - Картридж Colortek 92A C4092A черный</option>
+                                <option value="22">023.3200.5886 - Картридж ELC Q5942A черный</option>
+                                <option value="23">023.3200.5455 - Картридж Epson T048240 C13T04824010 голубой</option>
+                                <option value="24">023.3200.5452 - Картридж Epson T048440 желтый</option>
+                                <option value="25">023.3200.0543 - Картридж Epson T0485 C13T04854010 светло-голубой</option>
+                                <option value="26">023.3200.3547 - Картридж Epson T0801 C13T08014011 черный</option>
+                                <option value="27">023.3200.2991 - Картридж Epson T0802 C13T08024011 голубой</option>
+                                <option value="28">023.3200.4592 - Картридж Epson T0803 C13T08034011 пурпурный</option>
+                                <option value="29">023.3200.4591 - Картридж Epson T0804 C13T08044011 желтый</option>
+                                <option value="30">023.3200.3549 - Картридж Epson T0805 C13T08054011 светло-голубой</option>
+                                <option value="31">023.3200.3550 - Картридж Epson T0806 C13T08064011 светло-пурпурный</option>
+                                <option value="32">023.3200.5821 - Картридж Epson T0814 C13T11144A10 желтый</option>
+                                <option value="33">023.3200.5820 - Картридж Epson T0815 C13T11154A10 светло-голубой</option>
+                                <option value="34">023.3200.5612 - Картридж HP 05A CE505A/CE505AC черный</option>
+                                <option value="35">023.3200.5574 - Картридж HP 11X Q6511X черный</option>
+                                <option value="37">023.3200.6475 - Картридж HP 12A Q2612AC черный</option>
+                                <option value="36">023.3200.6545 - Картридж HP 12A Q2612A черный</option>
+                                <option value="38">023.3200.0474 - Картридж HP 131 C8765HE черный</option>
+                                <option value="39">023.3200.5620 - Картридж HP 13X Q2613X черный</option>
+                                <option value="40">023.3200.6013 - Картридж HP 15A C7115A черный</option>
+                                <option value="41">023.3200.5551 - Картридж HP 15X C7115X черный</option>
+                                <option value="42">023.3200.5321 - Картридж HP 16A Q7516A черный</option>
+                                <option value="43">023.3200.5572 - Картридж HP 201X CF400X черный</option>
+                                <option value="44">023.3200.5486 - Картридж HP 201X CF401X голубой</option>
+                                <option value="45">023.3200.5576 - Картридж HP 201X CF402X желтый</option>
+                                <option value="46">023.3200.5577 - Картридж HP 201X CF403X пурпурный</option>
+                                <option value="47">023.3200.5328 - Картридж HP 312A CF381A голубой</option>
+                                <option value="48">023.3200.5329 - Картридж HP 312A CF382A желтый</option>
+                                <option value="49">023.3200.5330 - Картридж HP 312A CF383A пурпурный</option>
+                                <option value="50">023.3200.5218 - Картридж HP 312X CF380X черный</option>
+                                <option value="51">023.3200.6473 - Картридж HP 36A CB436AC черный</option>
+                                <option value="52">023.3200.5421 - Картридж HP 36A CB436AF 2шт черный</option>
+                                <option value="53">023.3200.0649 - Картридж HP 38A Q1338A черный</option>
+                                <option value="54">023.3200.5581 - Картридж HP 42X Q5942XD черный</option>
+                                <option value="55">023.3200.7108 - Картридж HP 42Y Q5942YC черный</option>
+                                <option value="56">023.3200.5310 - Картридж HP 43X C8543X черный</option>
+                                <option value="57">023.3200.5540 - Картридж HP 45 51645AE черный</option>
+                                <option value="58">023.3200.6766 - Картридж HP 49X Q5949XC черный</option>
+                                <option value="59">023.3200.5579 - Картридж HP 51X Q7551X черный</option>
+                                <option value="60">023.3200.6472 - Картридж HP 53X Q7553XC черный</option>
+                                <option value="61">023.3200.5293 - Картридж HP 61X C8061X черный</option>
+                                <option value="62">023.3200.5587 - Картридж HP 645A C9730A/C9730AC черный</option>
+                                <option value="63">023.3200.5588 - Картридж HP 645A C9731A/C9731AC голубой</option>
+                                <option value="64">023.3200.5590 - Картридж HP 645A C9732A/C9732AC желтый</option>
+                                <option value="65">023.3200.4178 - Картридж HP 645A C9733AC пурпурный</option>
+                                <option value="66">023.3200.5604 - Картридж HP 64X CC364X/CC364XC черный</option>
+                                <option value="67">023.3200.6483 - Картридж HP 78A CE278AC черный</option>
+                                <option value="68">023.3200.5278 - Картридж HP 80A CF280A черный</option>
+                                <option value="69">023.3200.6606 - Картридж HP 80X CF280XC черный</option>
+                                <option value="70">023.3200.5305 - Картридж HP 82X C4182X черный</option>
+                                <option value="71">023.3200.6471 - Картридж HP 85A CE285AC черный</option>
+                                <option value="72">023.3200.0133 - Картридж HP C4127X черный</option>
+                                <option value="73">023.3200.2065 - Картридж HP CE505XC черный</option>
+                                <option value="74">023.3200.0802 - Картридж HP Q7551X черный</option>
+                                <option value="75">023.3200.6469 - Картридж Lexmark 56F5H0E черный</option>
+                                <option value="76">023.3200.6816 - Картридж Lexmark 58D5U0E черный</option>
+                                <option value="77">023.3200.5485 - Картридж Lexmark 60F5H0E черный</option>
+                                <option value="78">023.3200.6821 - Картридж Lexmark 76C00K0 черный</option>
+                                <option value="79">023.3200.5344 - Картридж Lexmark 76C0HC0 голубой</option>
+                                <option value="80">023.3200.5340 - Картридж Lexmark 76C0HM0 пурпурный</option>
+                                <option value="81">023.3200.5343 - Картридж Lexmark 76C0HY0 желтый</option>
+                                <option value="82">023.3200.5829 - Картридж Lexmark 78C5UC0 голубой</option>
+                                <option value="83">023.3200.5828 - Картридж Lexmark 78C5UK0 черный</option>
+                                <option value="84">023.3200.5824 - Картридж Lexmark 78C5UM0 пурпурный</option>
+                                <option value="85">023.3200.5830 - Картридж Lexmark 78C5UY0 желтый</option>
+                                <option value="86">023.3200.0247 - Картридж Samsung ML-1210D3/SEE черный</option>
+                                <option value="87">023.3200.0087 - Картридж Samsung ML-1710D3 черный</option>
+                                <option value="88">023.3200.0183 - Картридж Samsung SCX-4720D3 черный</option>
+                                <option value="90">023.3200.5489 - Картридж Samsung SCX-D4200A черный</option>
+                                <option value="89">023.3200.0427 - Картридж Samsung SCX-D4200A черный</option>
+                                <option value="91">023.3200.5273 - Картридж Xerox 006R01179 черный</option>
+                                <option value="92">023.3200.3047 - Картридж Xerox 006R01182</option>
+                                <option value="93">023.3200.5276 - Картридж Xerox 006R01278 черный</option>
+                                <option value="94">023.3200.4001 - Картридж Xerox 101R00435 черный</option>
+                                <option value="95">023.3200.0995 - Картридж Xerox 106R01159 черный</option>
+                                <option value="96">023.3200.3175 - Картридж Xerox 106R01277</option>
+                                <option value="97">023.3200.5461 - Картридж Xerox 106R01412 черный</option>
+                                <option value="98">023.3200.3061 - Картридж Xerox 106R01413 черный</option>
+                                <option value="99">023.3200.5269 - Картридж Xerox 106R01415 черный</option>
+                                <option value="100">023.3200.5304 - Картридж Xerox 106R01487 черный</option>
+                                <option value="101">023.3200.5258 - Картридж Xerox 106R02312 черный</option>
+                                <option value="102">023.3200.5245 - Картридж Xerox 106R02723 черный</option>
+                                <option value="103">023.3200.5247 - Картридж Xerox 106R02732 черный</option>
+                                <option value="104">023.3200.5536 - Картридж Xerox 106R03745 черный</option>
+                                <option value="105">023.3200.5535 - Картридж Xerox 106R03746 желтый</option>
+                                <option value="106">023.3200.5534 - Картридж Xerox 106R03747 пурпурный</option>
+                                <option value="107">023.3200.5533 - Картридж Xerox 106R03748 голубой</option>
+                                <option value="108">023.3200.5227 - Картридж Xerox 113R00773 черный</option>
+                                <option value="109">023.3200.1657 - Тонер Ricoh tуре 1270D для Aficio 1515/1515PS/1515F/1515MF</option>
+                                <option value="110">040.2190.5624 - Узел захвата бумаги Ролик захвата ADF Lexmark 40X8736 Lexmark MX310, MX410, MX510, MX610</option>
+                                <option value="111">040.2190.5712 - Фотобарабан Lexmark 50F0Z00 60000стр</option>
+                                <option value="112">040.2190.6133 - Фотобарабан Lexmark 56F0Z00 60000стр</option>
+                                <option value="113">040.2190.6125 - Фотобарабан Lexmark 58D0Z00 150000стр</option>
+                            </select>
+                            </div>
+                        <div class="col-md-6">
+                            <label for="input-group-text" for="id_mount_set-0-quantity">Количество</label>
+                            <input type="number" name="mount_set-0-quantity" class="form-control" name="quantity" value="1" min="1" required {% block Value-quantity %}{% endblock Value-quantity %}>
+                        </div>
+                        <div class = "col-md-6">
+                            <label for="id_mount_set-0-counter">Счётчик</label>
+                            <input type="number" name="mount_set-0-counter" class="form-control" name="counter" required {% block Value-counter %}{% endblock Value-counter %}>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="id_mount_set-0-query">Заявка</label>
+                            <input type="text" name="mount_set-0-query" class="form-control" name="query" maxlength="50" required {% block Value-query %}{% endblock Value-query %}>
+                        </div>
+                        <div class = "col-md-6">
+                            <label for="id_mount_set-0-initiator">Инициатор</label>
+                            <input type="text" name="mount_set-0-initiator" class="form-control" name="initiator" maxlength="100" required {% block Value-initiator %}{% endblock Value-initiator %}>
+                        </div>
+                        <div class = "col-12">
+                            <label for="id_mount_set-0-note">Примечание</label>
+                            <textarea class="form-control" name="mount_set-0-note" maxlength="100" rows="3" name="note" {% block Value-note %}{% endblock Value-note %}></textarea>
+                        </div>
+                        </div>
+                                {% endfor %}
+                                <div class="mt-4">
+                                    <button type="submit" class="btn btn-success mb-3">Сохранить</button>
+                                    <button type="reset" class="btn btn-outline-dark mb-3 ms-2" style="width: 50px;" title="Сброс">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </button>
+                                    <a href="javascript:window.history.back()" type="button" class="btn btn-outline-dark mb-3 ms-2" style="width: 50px;" title="Отмена">
+                                        <i class="fas fa-times"></i>
+                                    </a>
+                                </div>
+                        </form>
+            </div>
         </div>
     </div>
+    <br>
+</section>
 
+<script type="text/javascript">
+
+    // HAMBURGER BUTTON JS
+    let sidebar = document.querySelector(".sidebar");
+    let sidebarBtn = document.querySelector(".sidebarBtn");
+    sidebarBtn.onclick = function() {
+      sidebar.classList.toggle("active");
+      if(sidebar.classList.contains("active")){
+      sidebarBtn.classList.replace("bx-menu" ,"bx-menu-alt-right");
+    }else
+      sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+    }
+    </script>
 
 {% endblock %}

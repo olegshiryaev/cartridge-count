@@ -1,21 +1,67 @@
-{% extends 'ink/main.html' %}
-
-{% block content %}
-<br>
-<div class="row">
-    <div class="col-md-12">
-        <form method="post">
-            <div class="card">
-                <div class="card-header">
-            <h4>Добавить новое устройство</h4>
+<!-- Modal -->
+<div class="modal fade" {% block modal-id %} id="addModal" {% endblock modal-id %} tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="addModalLabel">
+                {% block modal-title %} <i class="fas fa-plus"></i>&nbsp;&nbsp; Добавить новое устройство {% endblock modal-title %}
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-            <div class="card-body">
-                <form action="{% url 'device_create' %}" method="post">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button class="btn btn-primary btn-sm btn-block" type="submit">Добавить</button>
-                </form>
+        <form method="POST" {% block action %} action="/device_create" {% endblock action %} autocomplete="off">
+            {% csrf_token %}
+            <div class="modal-body">
+    
+                <!-- ======== Block Id (Root) ======== -->
+    
+                <div class = "input-group mb-3">
+                    <span class="btn border-secondary bg-light side-label"><i class="fas fa-tag"></i></span>
+                    <input type="text" class="form-control" name="unit_id" maxlength="4" placeholder="Код УЕ" required {% block Value-unit_id %}{% endblock Value-unit_id %}>
+                </div>
+
+                <div class = "input-group mb-3">
+                    <label>
+                        <span class="btn border-secondary bg-light side-label" style="border-radius: 4px 0px 0px 4px;">
+                            <i class="fas fa-print"></i>
+                        </span>
+                    </label>
+                    <select class="form-select" name="type" required>
+                        {% block option %}
+                        <option value="" hidden>Тип устройства</option>
+                        {% endblock option %}
+                        <option disabled></option>
+                        <option>МФУ</option>
+                        <option>Принтер лазерный</option>
+                        <option>Принтер струйный</option>
+                        <option>Принтер сублимационный</option>
+                        <option>Принтер термо-трансферный</option>
+                    </select>
+                </div>
+    
+                <div class = "input-group mb-3">
+                    <span class="btn border-secondary bg-light side-label"><i class="fas fa-cog"></i></span>
+                    <input type="text" class="form-control" name="model" maxlength="40" placeholder="Модель" required {% block Value-model %}{% endblock Value-model %}>
+                </div>
+    
+                <div class = "input-group mb-3">
+                    <span class="btn border-secondary bg-light side-label side-label"><i class="fa fa-map-marker-alt"></i></span>
+                    <input type="text" class="form-control" name="location" maxlength="40" placeholder="Расположение" required {% block Value-location %}{% endblock Value-location %}>
+                </div>
+    
+                <div class="mt-4" style="width: 100%;">
+                    <button type="submit" class="btn btn-secondary mb-3">
+                        {% block btn-action %}<i class="fas fa-plus"></i>&nbsp;&nbsp; Сохранить устройство{% endblock btn-action %}
+                    </button>
+                    <button type="reset" class="btn btn-outline-dark mb-3 ms-2" style="width: 50px;" title="Сброс">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <a href="{% url 'home' %}" type="button" class="btn btn-outline-dark mb-3 ms-2" style="width: 50px;" title="Закрыть">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </div>
+            
             </div>
+        </form>
         </div>
     </div>
-{% endblock %}
+    </div>

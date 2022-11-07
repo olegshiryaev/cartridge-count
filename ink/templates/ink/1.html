@@ -1,0 +1,201 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="content">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <!-- Favicon -->
+    <link href={% static "img/favicon.ico" %} rel="shortcut icon">
+    <!-- Logo -->
+    <link href={% static "img/logo.ico" %} rel="shortcut icon">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <!-- FontAwesome -->
+    <link href={% static "fontawesomefree/css/fontawesome.css" %} rel="stylesheet" type="text/css">
+    <link href={% static "fontawesomefree/css/brands.css" %} rel="stylesheet" type="text/css">
+    <link href={% static "fontawesomefree/css/solid.css" %} rel="stylesheet" type="text/css">
+    <!-- Static CSS -->
+    <link href={% static "css/main.css" %} rel="stylesheet">
+    <!-- Datatables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jq-3.6.0/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-html5-2.2.3/b-print-2.2.3/datatables.min.css"/>
+    <title>{% block title %} {% endblock %}</title>
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+</head>
+<body class="g-sidenav-show  bg-gray-100">
+
+    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+
+        {% include "includes/navigation.html" %} 
+
+        {% block content %}{% endblock content %}
+
+    </main>
+
+    <!-- ===== Include ===== -->
+    {% include 'ink/device_create.html' %}
+
+    <!-- Jquery -->
+    <script src={% static "js/jquery-3.6.1.min.js" %}></script>
+    <script src={% static "js/popper.js" %}></script>
+    <!-- Bootstrap 5 JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
+    <script src={% static "js/main.js" %}></script>
+    <!-- Datatables JS -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jq-3.6.0/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-html5-2.2.3/b-print-2.2.3/datatables.min.js"></script>
+
+    <!-- Datatables script -->
+    <script>
+        $(document).ready(function() {
+            $('#devices thead tr')
+                .clone(true)
+                .addClass('filters')
+                .appendTo('#devices thead');
+
+            var table = $('#devices').DataTable({
+                //Datatable configurations
+                paging: true, // Pagination
+                pageLength: 10, // Data per page
+                lengthChange: true, // Show entries per page
+                autoWidth: false, // Control the auto width on columns
+                searching: true, // Input search
+                bInfo: true, // Info on footer
+                bSort: true,
+                language: {
+                    url: '{% static "localisation/ru.json" %}'
+                }, // Filter A to Z and Z to A (and numbers)
+                // Disable colums with specific filter A to Z, Z to A
+                // "columnDefs": [{
+                //     // "targets": 5, // 1 column
+                //     "targets": [4, 5], // More than 1 column
+                //     "orderable": false
+                // }]
+                initComplete: function() {
+                    var api = this.api();
+
+                    // Set the columns you with filtering
+                    api
+                        .columns([0, 1, 2, 3])
+                        .eq(0)
+                        .each(function(colIdx) {
+                            var cell = $('.filters th').eq(
+                                $(api.column(colIdx).header()).index()
+                            );
+                            var title = $(cell).text();
+                            $(cell).html('<input type="text" placeholder="' + title + '"/>');
+
+                            $(
+                                'input',
+                                $('.filters th').eq($(api.column(colIdx).header()).index())
+                            )
+                            .off('key change')
+                            .on('keyup change', function(e) {
+                                e.stopPropagation();
+
+                                $(this).attr('title', $(this).val());
+                                var regexr = '({search})';
+
+                                var cursorPosition = this.selectionStart
+
+                                api
+                                    .column(colIdx)
+                                    .search(
+                                        this.value != ''
+                                            ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                            : '',
+                                        this.value != '',
+                                        this.value == ''
+                                    )
+                                .draw();
+
+                            $(this)
+                                .focus()[0]
+                                .setSelectionRange(cursorPosition, cursorPosition);
+                            });
+                        });
+                },
+                // BUTTONS
+            dom: 'lBfrtip',
+            buttons: [
+                {   // COPY
+                    extend: 'copy',
+                    text: '<i class="fas fa-clone"></i>',
+                    className: 'btn btn-secondary',
+                    titleAttr: 'Скопировать',
+                    // Choose the columns you with to copy
+                    exportOptions: {
+                        columns: [0, 1, 2, 3]
+                    },
+                },
+                {   // EXCEL
+                    extend: 'excel',
+                    text: '<i class="fas fa-file-excel"></i>',
+                    className: 'btn btn-secondary',
+                    titleAttr: 'Экспорт в Excel',
+                    // Choose the columns you with to export
+                    exportOptions: {
+                        columns: [0, 1, 2, 3]
+                    },
+                },
+                {   // PRINT
+                    extend: 'print',
+                    text: '<i class="fas fa-print"></i>',
+                    className: 'btn btn-secondary',
+                    titleAttr: 'Печать',
+                    // Choose the columns you with to print
+                    exportOptions: {
+                        columns: [0, 1, 2, 3]
+                    },
+                    // Font size (when export to print)
+                    customize: function ( win ) {
+                        $(win.document.body).css('font-size', '10pt')
+                        $(win.document.body).find('table')
+                            .addClass('compact')
+                            .css('font-size', 'ínherit');
+                    }
+                },
+                {   // PDF
+                    extend: 'pdf',
+                    text: '<i class="fas fa-file-pdf"></i>',
+                    className: 'btn btn-secondary',
+                    titleAttr: 'Сохранить в PDF',
+                    // Choose the columns you with to PDF
+                    exportOptions: {
+                        columns: [0, 1, 2, 3]
+                    },
+                    // Center the table
+                    tableHeader: {
+                        alignment: 'center'
+                    },
+                    // Font size and optimization
+                    customize: function (doc) {
+                        doc.styles.tableHeader.alignment = 'center'; // Header position
+                        doc.styles.tableBodyOdd.alignment = 'center'; // Body position 1 (grey color)
+                        doc.styles.tableBodyEven.alignment = 'center'; // Body position 1 (white color)
+                        doc.styles.tableHeader.fontSize = 7; // Header fon-size
+                        doc.defaultStyle.fontsize = 6;   // Body fon-size
+                        // To get 100% width of the table
+                        doc.content[1].table.widths = Array(doc.content[1].table.body[1]. length +1 ).join('*').split('')
+                    }
+                },
+            ]
+            });
+            // Enable Searchbox Outside
+            var newSearch = $("#devices").DataTable();
+            $('#search').keyup(function() {
+            newSearch.search($(this).val()).draw();
+            })
+        });
+    </script>
+
+</body>
+</html>

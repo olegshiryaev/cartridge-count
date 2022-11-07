@@ -1,0 +1,116 @@
+/* ----------------------------------------
+# START CONFIGURATION
+---------------------------------------- */
+html,
+body {
+    height: 100%;
+    margin: 0;
+    max-width: 100%;
+}
+/* ----------------------------------------
+# FOOTER
+---------------------------------------- */
+.wrapper {
+    min-height: 100%;
+    margin-bottom: -50px;
+}
+#footer,
+.push {
+    height: 50px;
+}
+/* ----------------------------------------
+# OTHERS
+---------------------------------------- */
+/* Labels 0f inputs */
+.side-label {
+    width: 45px;
+}
+/* ----------------------------------------
+# CUSTOM PAGINATION
+---------------------------------------- */
+.page-item.active .page-link {
+    columns: #fff;
+    background-color: #6c757d;
+    border: 1px solid #6c757d;
+}
+.pagination > li > a {
+    background-color: #fff;
+    color: #6c757d;
+}
+.pagination > li > a:focus,
+.pagination > li > a:hover,
+.pagination >span > a:focus,
+.pagination > span > a:hover {
+    color: #111;
+    background-color: #d3d3d3;
+    border: 1px solid #6c757d;
+    box-shadow: none;
+}
+/* ----------------------------------------
+# DATATABLES
+---------------------------------------- */
+/* Pagination */
+.dataTables_paginate {
+    margin-top: -30px !important;
+}
+/* Input search */
+.dataTables_filter {
+    display: none;
+}
+/* Show entries */
+.dataTables_length {
+    float: right !important;
+    margin-top: 10px !important;
+}
+/* Group buttons */
+.dt-buttons {
+    margin-bottom: 10px !important;
+}
+/*  */
+.table.dataTable thead th {
+    text-align: center;
+}
+
+thead input {
+    width: 100%;
+    text-align: center;
+}
+/* ----------------------------------------
+# SWEETALERT CUSTOMIZED
+---------------------------------------- */
+.swal-modal {
+    background-color: rgba(0, 0, 0, 0.651);
+    color: #fff;
+}
+.swal-title {
+    color: #fff;
+    font-size: 20px;
+}
+.swal-text {
+    color: #fff;
+    font-size: 15px;
+}
+/* Button */
+.swal-button {
+    padding: 7px 19px;
+    border-radius: 5px;
+    background-color: #198754;
+    font-size: 12px;
+    border: 1px solid #198754;
+}
+.swal-button:focus {
+    box-shadow: none;
+}
+.swal-button:not([disabled]):hover {
+    background: transparent;
+    color: #fff;
+    border: 1px solid #198754;
+}
+/* Icons */
+.swal-icon--success__hide-corners {
+    background: none !important;
+}
+.swal-icon--success:before,
+.swal-icon--success:after {
+    background: none !important;
+}

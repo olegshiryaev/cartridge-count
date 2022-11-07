@@ -1,0 +1,33 @@
+{% extends 'ink/add.html' %}
+
+<!-- Modal ID -->
+{% block modal-id %} id="editModal{{ employee.pk }}" {% endblock modal-id %}
+<!-- Modal Title -->
+{% block modal-title %} <i class="fas fa-edit"></i>&nbsp;&nbsp; Edit Employee {% endblock modal-title %}
+<!-- Form Action -->
+{% block action %} action="/edit_employee" {% endblock action %}
+<!-- Button Action -->
+{% block btn-action %}<i class="fas fa-server"></i>&nbsp;&nbsp; Save Changes {% endblock btn-action %}
+
+<!-- ========== All <Inputs> ========== -->
+<!-- ID -->
+{% block Value-id %}
+<div class = "input-group mb-3">
+    <span class="btn border-secondary bg-light side-label"><i class="fa fa-key"></i></span>
+    <input type="text" class="form-control" name="id" value="{{ employee.id }}" readonly>
+</div>
+{% endblock Value-id %}
+<!-- Name -->
+{% block Value-name %} value="{{ employee.name }}" {% endblock Value-name %}
+<!-- Email -->
+{% block Value-email %} value="{{ employee.email }}" {% endblock Value-email %}
+<!-- Occupation -->
+{% block Value-occupation %} value="{{ employee.occupation }}" {% endblock Value-occupation %}
+<!-- Salary -->
+{% block Value-salary %} value="{{ employee.salary }}" {% endblock Value-salary %}
+<!-- Gender -->
+{% block option %}
+<option style="background-color: #d3d3d3; counter-reset: #111;">{{ employee.gender }}</option>
+{% endblock option %}
+<!-- Note -->
+{% block note %}{{ employee.salary }}{% endblock note %}

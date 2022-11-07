@@ -21,7 +21,7 @@ class DeviceUpdateForm(forms.ModelForm):  # Форма для редактиро
     class Meta:
         model = Device
         fields = '__all__'
-        exclude = ['unit_id', 'slug']
+        exclude = ['unit_id']
         widgets = {
             'type': Select(attrs={'class': 'col-md-12 form-control'}),
             'model': TextInput(attrs={'class': 'col-md-12 form-control'}),

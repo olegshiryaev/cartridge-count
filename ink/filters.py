@@ -8,7 +8,7 @@ class MountFilter(django_filters.FilterSet):  # Фильтр по полю "За
 
     class Meta:
         model = Mount
-        fields = ['query', 'date']
+        fields = ['query', 'created_at']
 
 
 # Фильтр по полю "Наименование" картриджа

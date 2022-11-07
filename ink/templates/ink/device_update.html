@@ -1,29 +1,24 @@
-{% extends 'ink/main.html' %} 
-{% load static %} 
-{% block content %}
+{% extends 'ink/device_create.html' %}
 
-<br />
-<div class="row">
-    <div class="col-md-12">
-        <form method="post">
-            <div class="card">
-                <div class="card-header">
-                    <h4>Изменить устройство</h4>
-                </div>
-                <div class="card-body">
-                    {% csrf_token %}
-                        {{ form.updev_form }}
-                        {% for field in form %}
-                            {{field}}
-                            <hr>
-                        {% endfor %}
-                </div>
-            </div>
-            <div class="mt-3 mb-5">
-                <button type="submit" class="px-5 btn btn-info">Изменить</button>
-            </div>
-        </form>
-    </div>
-</div>
+<!-- Modal ID -->
+{% block modal-id %} id="editDeviceModal{{ device.unit_id }}" {% endblock modal-id %}
+<!-- Modal Title -->
+{% block modal-title %} <i class="fas fa-edit"></i>&nbsp;&nbsp; Изменить устройство {% endblock modal-title %}
+<!-- Form Action -->
+{% block action %} action="/device_update" {% endblock action %}
+<!-- Button Action -->
+{% block btn-action %}<i class="fas fa-server"></i>&nbsp;&nbsp; Сохранить изменения {% endblock btn-action %}
 
-{% endblock %}
+<!-- ========== All <Inputs> ========== -->
+<!-- ID -->
+{% block Value-unit_id %}
+input type="text" class="form-control" name="unit_id" value="{{ device.unit_id }}" readonly
+{% endblock Value-unit_id %}
+<!-- Name -->
+{% block option %}
+<option style="background-color: #d3d3d3; counter-reset: #111;">{{ device.type }}</option>
+{% endblock option %}
+<!-- Email -->
+{% block Value-model %} value="{{ device.model }}" {% endblock Value-model %}
+<!-- Occupation -->
+{% block Value-location %} value="{{ device.location }}" {% endblock Value-location %}

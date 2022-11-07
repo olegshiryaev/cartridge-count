@@ -1,92 +1,189 @@
-{%  extends 'ink/main.html' %}
+{% extends 'ink/main.html' %}
+{% load static %}
+{% block title %} {{device.unit_id}} - {{device.type}} {{device.model}} {% endblock %}
 
+<!-- Page content -->
 {% block content %}
+<link rel="stylesheet" href="{% static 'css/devdetail.css' %}">
+<link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet">
+<link rel="stylesheet" href=https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css"">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.dataTables.min.css">
 
-	<br>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/rowreorder/1.2.8/js/dataTables.rowReorder.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 
-<div class="row">
-	<div class="col-md">
-		<div class="dev-card card card-body">
-			<h5>Устройство</h5>
-            <hr>
-            <p>Код УЕ: {{device.unit_id}}</p>
-            <a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'device_update' device.unit_id %}?next={{ request.path }}">Изменить устройство</a>
-			<a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'create_mount' device.unit_id %}?next={{ request.path }}">Установить картридж</a>
+<section class="home-section">
+    <nav>
+        <div class="sidebar-button">
+            <i class='bx bx-menu sidebarBtn'></i>
+            <div>
+                <label style="padding-top: 10px;"><h2>{{device.type}} {{device.model}}</h2></label>
+            </div>
+        </div>
+    </nav>
 
-		</div>
-	</div>
+    <div class="container home-content">
+                <div class="device-detail-yellow">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                        {% if device.image %}
+                            <div class="device-image" style="background-image: url({{device.image.url}})"></div>
+                        {% else %}
+                            <div class="device-image" style="background-image: url({% static '/img/devices/default_device.png' %})"></div>
+                        {% endif %}
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                            <div class="device-detail-text">
+                                <div class="device-detail-info">                       
+                                    <span class="label">Код УЕ</span>
+                                    <span class="value">{{device.unit_id}}</span>
+                                </div>
+                                
+                                <div class="device-detail-info">                       
+                                    <span class="label">Тип</span>
+                                        {% if device.color %}
+                                            {% if device.type == "МФУ" %}
+                                                <span class="value">Цветное {{device.type}}</span>
+                                            {% else %}
+                                                <span class="value">Цветной {{device.type|lower}}</span>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% if not device.color %}
+                                        <span class="value">{{device.type}}</span>
+                                    {% endif %}
+                                </div>
 
-	<div class="col-md">
-		<div class="dev-card card card-body">
-			<h5>Информация об устройстве</h5>
-			<hr>
-			<p>Тип: {{device.type}}</p>
-            <p>Модель: {{device.model}}</p>
-			<p>Расположение: {{device.location}}</p>
-		</div>
-	</div>
+                                <div class="device-detail-info">                       
+                                    <span class="label">Модель</span>
+                                    <span class="value">{{device.model}}</span>
+                                </div>
+                                <div class="device-detail-info">                       
+                                    <span class="label">Расположение</span>
+                                    <span class="value" style="padding-left: 20px">{{device.location}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                            <div class="device-detail-text">
+                                <div class="device-detail-info">
+                                    {% if device.cartridge.all|length > 1 %}
+                                    <span class="label">Совместимые картриджи</span>
+                                    {% else %}
+                                    <span class="label">Совместимый картридж</span>
+                                    {% endif %}
+                                    <ul class="list-item">
+                                    {% for cartridge in device.cartridge.all %}
+                                    <li><span class="value">{{cartridge.model|cut:"черный"|cut:"Картридж"|cut:"Lexmark"|cut:"голубой"|cut:"пурпурный"|cut:"желтый"}}</span></li>
+                                    {% endfor %}
+                                    </ul>
+                                </div>
+                                <div class="device-detail-info">                       
+                                    <span class="label">IP-адрес</span>
+                                    <a class="value" target="_blank" style="color: #6495ED; text-decoration: none" href={{device.ip}}>{{device.ip|default_if_none:""|cut:"http://"}}</a>
+                                    <!-- При переносе на локальный сервер, можно будет определять IP адрес устройства автоматически -->
+                                    <!-- <a class="value" target="_blank" style="color: #6495ED; text-decoration: none" href=http://{{ip_address}}>{{ip_address}}</a> -->
+                                </div>
+                                <div class="device-detail-info">                       
+                                    <span class="label">Серийный номер</span>
+                                    <span class="value">{{device.serial_number|default_if_none:""}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                        <a class="btn btn-mount btn-success"  href="{% url 'create_mount' device.unit_id %}?next={{ request.path }}">Установить картридж</a>
+                    </div>
+                </div>   
+            </div> 
 
-	<div class="col-md">
-		<div class="dev-card card card-body">
-			<h5>Количество установок картриджей</h5>
-			<hr>
-			<h1 style="text-align: center;padding: 10px">{{mounts_count}}</h1>
-		</div>
-	</div>
-</div>
+    <div class="device-mount">
+        <div class="device-mount-table">
+            {% if mounts_count < 1%}
+                <p style="text-align: center; margin-bottom: 0px">Не было ни одной установки картриджа на данное устройство</p>
+            {% else %}
+                <table id="mount" class="table table-hover" style="width:100%">
+                    <thead>
+                    <tr>
+                        <th data-priority="1" style="width: 7%">Дата</th>
+                        <th data-priority="1" style="width: 25%">Наименование</th>
+                        <th data-priority="1" style="width: 5%">Кол-во</th>
+                        <th style="width: 7%">Заявка</th>
+                        <th style="width: 10%">Инициатор</th>
+                        <th style="width: 10%">Автор</th>
+                        <th style="width: 7%">Счётчик</th>
+                        <th style="width: 19%">Примечание</th>
+                        <th style="width: 10%">Действия</th>
+                    </tr>
+                </thead>
+                    {% for mount in mounts %}
+                    <tr>
+                        <td>{{mount.created_at|date:"d.m.Y"}}</td>
+                        <td>{{mount.cartridge.model}}</td>
+                        <td>{{mount.quantity}}</td>
+                        <td><a class="value" target="_blank" style="color: #f92; text-decoration: none" href=http://otrs.rt.ru/otrs/index.pl?Action=AgentTicketZoom;TicketID={{mount.query|add:-10046856}}>{{mount.query}}</a></td>
+                        <td>{{mount.initiator|default_if_none:""}}</td>
+                        {% if mount.creator %}
+                        <td>{{mount.creator.last_name}} {{mount.creator.first_name|first}}.</td>
+                        {% else %}
+                        <td>{{mount.creator|default_if_none:"System"}}</td>
+                        {% endif %}
+                        <td>{{mount.counter|default_if_none:""}}</td>
+                        <td>{{mount.note|default_if_none:""}}</td>
+                        <td>
+                            <div class="d-grid gap-2 d-lg-block">
+                            <a class="btn btn-warning" href="{% url 'update_mount' mount.id %}?next={{ request.path }}"><i class='bx bx-pencil' ></i></a>
+                        <a class="btn btn-danger" href="{% url 'delete_mount' mount.id %}?next={{ request.path }}"><i class='bx bx-trash'></i></a></td>
+                    </div>
+                    </tr>
 
+                    {% endfor %}
+                </table>
+                {% endif %}
+        </div>
+    </div>
+    <br>
+</section>
+<script>
+    $(document).ready(function() {
+      var table = $('#mount').DataTable( {
+        responsive: true,
+        order: [[0, 'asc']],
+        language: {
+            url: '{% static "localisation/ru.json" %}'
+        },
+        pagingType: "simple",
+        columnDefs: [{
+            targets: [7, 8],
+            orderable: false
+        }],
+      });
+    });
+</script>
 
-<br>
-<div class="row">
-	<div class="col">
-		<div class="card card-body">
+<script type="text/javascript">
 
-			<form method="GET" class="form-inline">
-                <div class=form-group>
-                    <label style="margin-right: 20px">Заявка: </label>
-				{{myFilter.form.query}}
-                <label style="margin-left: 20px; margin-right: 10px;">Дата: </label>
-                {{myFilter.form.date}}
-                <button style="margin-left: 10px" class="btn btn-secondary btn-sm">
-                    Поиск
-                   </button>
-                </div>
-		  </form>
+    // HAMBURGER BUTTON JS
+    let sidebar = document.querySelector(".sidebar");
+    let sidebarBtn = document.querySelector(".sidebarBtn");
+    sidebarBtn.onclick = function() {
+      sidebar.classList.toggle("active");
+      if(sidebar.classList.contains("active")){
+      sidebarBtn.classList.replace("bx-menu" ,"bx-menu-alt-right");
+    }else
+      sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+    }
+    </script>
 
-		</div>
-	</div>
-	
-</div>
-<br>
-
-<div class="row">
-	<div class="col-md">
-		<div class="card card-body">
-			<table class="table table-sm">
-				<tr>
-					<th>Дата</th>
-					<th>Наименование</th>
-					<th>Кол-во</th>
-					<th>Заявка</th>
-                    <th>Изменить</th>
-                    <th>Удалить</th>
-				</tr>
-
-				{% for mount in mounts %}
-
-				<tr>
-					<td>{{mount.date}}</td>
-					<td>{{mount.cartridge}}</td>
-					<td>{{mount.quantity}}</td>
-					<td>{{mount.query}}</td>
-                    <td><a class="btn btn-sm btn-info" href="{% url 'update_mount' mount.id %}?next={{ request.path }}">Изменить</a></td>
-					<td><a class="btn btn-sm btn-danger" href="{% url 'delete_mount' mount.id %}?next={{ request.path }}">Удалить</a></td>
-				</tr>
-				{% endfor %}
-
-			</table>
-		</div>
-	</div>
-</div>
+{% for message in messages %}
+    {% if message.tags == 'success' %}
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        var m = "{{ message }}";
+        swal("Готово!", m, "success")
+    </script>
+    {% endif %}
+{% endfor %}
 
 {% endblock %}
